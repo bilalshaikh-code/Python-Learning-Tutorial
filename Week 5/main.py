@@ -6,14 +6,11 @@ import math
 # Add task: input from user - Task name, Description, due date-time (valid format). Defualt save - current date-time non as the created datetime.
 class task:
 
-    def __init__(self,name,des,due):
+    def __init__(self,name,des,due: datetime.datetime):
         self.name = name
         self.description = des
         self.due_date = due
         self.create_date = datetime.datetime.today()
-
-    def addTask(self):
-        ...
 
     def getName(self):
         return self.name
@@ -26,7 +23,7 @@ class task:
     
     def getCreated(self):
         return self.create_date
-
+    
     @staticmethod
     def menu():
         print("-"*12)
@@ -36,13 +33,12 @@ class task:
         print("Press 2 for Display all task")
         print("Press 3 for Delete task")
         print("Press 4 for Check how much time is left until deadline")
-        print("Press 5 for Use basic stats(e.g. task urgency, days left)")
-        print("Press 6 for Exit")
+        print("Press 5 for Exit")
 
         return int(input("Enter your choice: "))
 
 if __name__ == "__main__":
-    taskes = []
+    tasks = []
     while True:
         ch = task.menu()
 
@@ -57,26 +53,27 @@ if __name__ == "__main__":
                 except Exception:
                     print(f"{due} format is invalid or date-time is invalid!!")
                 task1 = task(name,des,format)
-                taskes.append(task1)
+                tasks.append(task1)
                 print("Successfully Added Task.")
             case 2:
                 print("-"*10+"\nDisplay All Task\n"+"-"*10)
-                for tsk in taskes:
-                    print(f"Task Name: {tsk.getName()}\nDescription: {tsk.getDescription()}\nDue: {tsk.getDue()}\nCreated Date: {tsk.getCreated()}")
+                for tsk in tasks:
+                    print(f"Task Name: {tsk.getName()}\nDescription: {tsk.getDescription()}\nDue: {tsk.getDue()}\nCreated Date: {tsk.getCreated()}\nDays remaining: {tsk.getDue() - datetime.datetime.now()}")
                     print("="*10)
             case 3:
                 print("-"*10+"\nDelete task\n"+"-"*10)
                 name = input("Enter the task name to want to delete: ")
                 if input("Verify to enter the delete word: ") != "delete":
                     print(f"{name} is not delete!")
-                    
-                for tsk in taskes:
-                    if tsk.getName() == name:
-                        taskes.remove(tsk)
-                print("Successfully Deleted!")
+                else:
+                    for tsk in tasks:
+                        if tsk.getName() == name:
+                            tasks.remove(tsk)
+                    print("Successfully Deleted!")
             case 4:
-                ...
+                print("-"*10+"\nDeadline Task\n"+"-"*10)
+                for tsk in tasks:
+                    if (tsk.getDue() - datetime.datetime.now()).days >= 0 and (tsk.getDue() - datetime.datetime.now()).days <= 1:
+                        print(f"Task Name: {tsk.getName()}\nDescription: {tsk.getDescription()}\nRemaining Days/Time: {tsk.getDue() - datetime.datetime.now()}")
             case 5:
-                ...
-            case 6:
                 break
